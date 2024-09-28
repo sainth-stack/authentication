@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import bedroom from '../../assests/images/bedroom.png'
 import { Link, useNavigate } from 'react-router-dom';
-//vihsnu
 import { baseURL } from '../../const/const';
 import axios from 'axios';
 
