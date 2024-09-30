@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import bedroom from '../../assests/images/bedroom.png'
+import bedroom from '../../assests/images/logola.png'
 import { Link, useNavigate } from 'react-router-dom';
 //vihsnu
 import { baseURL } from '../../const/const';
@@ -32,10 +32,10 @@ const Register = () => {
         formData.append("password1", password);
         formData.append("password2", password2);
         axios
-            .post(`${baseURL}/`, formData)
+            .post(`${baseURL}/register/`, formData)
             .then((response) => {
                 setLoading(false);
-                if (response?.data?.status === "Success") {
+                if (response?.data === "Success") {
                     navigate("/login");
                 } else {
                     setError(response?.data);
@@ -65,12 +65,6 @@ const Register = () => {
                         backgroundPosition: "center",
                     }}
                 >
-                    <h5
-                        className="sm:text-danger custom-heading title font-weight-bold mt-2  container text-center"
-                        style={{ fontSize: "2rem", width: "90%" }}
-                    >
-                        Design the room of your dreams
-                    </h5>
                 </div>
                 <div className="col-md-6 col-xs-12 col-sm-12 text-center pt-5 mt-5">
                     <div className="row mt-5">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import bedroom from '../../assests/images/bedroom.png'
+import bedroom from '../../assests/images/logola.png'
 import { baseURL } from '../../const/const';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -18,14 +18,14 @@ const Login = () => {
     /* const [email, setEmail] = useState("info@desai.net");
      */
 
-    const [email, setEmail] = useState("username");
+    const [email, setEmail] = useState("");
     /*   const [password, setPassword] = useState("Keypulse@123");
   
   */
 
-    const [password, setPassword] = useState("Test@123");
+    const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const googleLoginURL = `${baseURL}/googlelogin`;
+    const googleLoginURL = `${baseURL}/googlelogin/`;
 
     const getUserData = async (userName) => {
         try {
@@ -33,7 +33,7 @@ const Login = () => {
                 var formData = new FormData();
                 formData.append("user", userName);
                 const response = await axios.post(
-                    `${baseURL}/get_user_details`,
+                    `${baseURL}/get_user_details/`,
                     formData
                 );
                 console.log(response);
@@ -49,30 +49,32 @@ const Login = () => {
         //   setLoading(true)
         //   navigate('/start-design')
         // }
+        setLoading(true)
         var formData = new FormData();
         formData.append("username", email);
         formData.append("password", password);
         formData.append("email", email);
         event.preventDefault();
         axios
-            .post(`${baseURL}/login`, formData)
+            .post(`${baseURL}/login/`, formData)
             .then((response) => {
                 setLoading(false);
                 console.log(response);
-                if (response.data?.status === "Success") {
-                    navigate("/start-design");
+                if (response.data.status === "success") {
                     localStorage.setItem("username", email);
                     localStorage.setItem("email", email);
                     localStorage.setItem("token", `${response.data}`);
-                    getUserData(email);
+                    alert('Login Successful!')
                 } else {
                     setError(response.data);
-                    console.log("Login Failed");
+                    alert("Login Failed!");
                     // window.alert("Incorrect Password")
                 }
             })
             .catch((err) => {
+                setLoading(false)
                 console.log(err);
+                alert("Login Failed!");
             });
     };
 
@@ -107,25 +109,26 @@ const Login = () => {
         formData.append("username", `${data.name.replaceAll(" ", "_")}`);
         formData.append("id", data.id);
         formData.append("email", data.email);
-
+        setLoading(true)
         axios
             .post(googleLoginURL, formData)
             .then((response) => {
                 console.log(response);
                 setLoading(false);
                 if (response.status === 200) {
-                    navigate("/start-design");
-                    console.log(data);
                     localStorage.setItem("username", `${data.name.replaceAll(" ", "_")}`);
                     localStorage.setItem("email", data.email);
                     localStorage.setItem("token", `${response.data}`);
+                    alert('Login Successful!')
                 } else {
                     setError(response.data);
-                    console.log("Login Failed");
+                    alert("Login Failed!");
+                    setLoading(false)
                     // window.alert("Incorrect Password")
                 }
             })
             .catch((err) => {
+                setLoading(false)
                 console.log(err);
             });
     };
@@ -140,7 +143,7 @@ const Login = () => {
         <>
             <div
                 className="container-fluid row m-0 p-0"
-                style={{ background: "rgb(255 252 245)" }}
+                style={{ background: "white" }}
             >
                 <div
                     className="col-md-6 pt-4 pb-4"
@@ -155,12 +158,6 @@ const Login = () => {
                         backgroundPosition: "center",
                     }}
                 >
-                    <h5
-                        className="sm:text-danger title custom-heading font-weight-bold mt-2  container text-center"
-                        style={{ fontSize: "4.3rem", width: "90%" }}
-                    >
-                        Generate Room designs in Seconds
-                    </h5>
                 </div>
                 <div className="col-md-6 col-xs-12 col-sm-12 text-center pt-lg-5 mt-lg-5">
                     <div className="pt-5"></div>
@@ -227,7 +224,7 @@ const Login = () => {
                                         name="email"
                                         autoComplete="off"
                                         value={email}
-                                        readOnly
+
                                         required
                                         onChange={(e) => setEmail(e.target.value)}
                                     // onFocus={() => setMessage("")}
